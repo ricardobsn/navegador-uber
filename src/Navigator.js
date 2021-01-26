@@ -1,0 +1,72 @@
+import React from 'react';
+import {
+  createBottomTabNavigator,
+  createSwitchNavigator,
+  createStackNavigator,
+} from 'react-navigation';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import Login from './screens/Login';
+import Tour from './screens/Tour';
+import Profile from './screens/Profile';
+import Register from './screens/Register';
+
+const authRouter = createStackNavigator(
+  {
+    Login: {screen: Login, navigationOptions: {title: 'Login'}},
+    Register: {screen: Register, navigationOptions: {title: 'Register'}},
+  },
+  {
+    initialRouteName: 'Login',
+  },
+);
+
+const loginOrProfileRouter = createSwitchNavigator(
+  {
+    Profile: Profile,
+    Auth: authRouter,
+  },
+  {
+    initialRouteName: 'Auth',
+  },
+);
+
+const MenuRoutes = {
+  Tour: {
+    name: 'Tour',
+    screen: Tour,
+    navigationOptions: {
+      title: 'Tour',
+      tabBarIcon: ({tintColor}) => (
+        <Icon name="home" size={30} color={tintColor} />
+      ),
+    },
+  },
+  Profile: {
+    name: 'Profile',
+    screen: loginOrProfileRouter,
+    navigationOptions: {
+      title: 'Profile',
+      tabBarIcon: ({tintColor: color}) => (
+        <Icon name="user" size={30} color={color} />
+      ),
+    },
+  },
+};
+
+const MenuConfig = {
+  initialRouteName: 'Tour',
+  tabBarOptions: {
+    showLabel: false,
+  },
+};
+
+// const authRouter = createStackNavigator({
+//     Login: { screen: Login, navigationOptions: { title: 'Login' } },
+//     Register: { screen: Register, navigationOptions: { title: 'Register' } }
+// }, {
+//     initialRouteName: 'Login'
+// })
+
+const MenuNavigator = createBottomTabNavigator(MenuRoutes, MenuConfig);
+
+export default MenuNavigator;
